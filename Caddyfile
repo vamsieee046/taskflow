@@ -1,0 +1,5 @@
+# DOMAIN comes from .env. On a server with no domain use <elastic-ip>.nip.io (Caddy gets a real certificate).
+{$DOMAIN:localhost} {
+	encode gzip
+	reverse_proxy app:8000
+}

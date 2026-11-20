@@ -1,0 +1,58 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#44505c"/></marker>
+    <style>
+      .box{fill:#fff;stroke:#44505c;stroke-width:1.5;rx:8}
+      .zone{fill:#f2f5f9;stroke:#9aa7b4;stroke-width:1.5;stroke-dasharray:6 4;rx:12}
+      .t{fill:#18212b} .s{fill:#5d6b79;font-size:12px} .h{font-weight:700;font-size:15px}
+      .ln{stroke:#44505c;stroke-width:1.6;fill:none;marker-end:url(#a)}
+      .dash{stroke-dasharray:5 4}
+    </style>
+  </defs>
+  <rect width="960" height="600" fill="#ffffff"/>
+  <text x="24" y="34" class="t h" font-size="20">TaskFlow architecture</text>
+
+  <!-- CI/CD row -->
+  <rect class="box" x="24" y="60" width="130" height="64"/><text x="89" y="88" text-anchor="middle" class="t h">Developer</text><text x="89" y="108" text-anchor="middle" class="s">feature branch + PR</text>
+  <rect class="box" x="204" y="60" width="130" height="64"/><text x="269" y="88" text-anchor="middle" class="t h">GitHub</text><text x="269" y="108" text-anchor="middle" class="s">main protected</text>
+  <rect class="zone" x="384" y="50" width="400" height="84"/><text x="396" y="68" class="s">GitHub Actions</text>
+  <rect class="box" x="396" y="78" width="88" height="44"/><text x="440" y="105" text-anchor="middle" class="t">Lint + test</text>
+  <rect class="box" x="496" y="78" width="88" height="44"/><text x="540" y="105" text-anchor="middle" class="t">Build image</text>
+  <rect class="box" x="596" y="78" width="88" height="44"/><text x="640" y="105" text-anchor="middle" class="t">Trivy scan</text>
+  <rect class="box" x="696" y="78" width="76" height="44"/><text x="734" y="105" text-anchor="middle" class="t">Deploy</text>
+  <rect class="box" x="814" y="60" width="122" height="64"/><text x="875" y="88" text-anchor="middle" class="t h">GHCR</text><text x="875" y="108" text-anchor="middle" class="s">image :sha, :latest</text>
+  <path class="ln" d="M154 92 H204"/><path class="ln" d="M334 92 H384"/>
+  <path class="ln" d="M584 100 H596"/><path class="ln" d="M484 100 H496"/><path class="ln" d="M684 100 H696"/>
+    <path class="ln dash" d="M540 78 V68 H814"/>
+  <text x="650" y="63" class="s">push image</text>
+  <path class="ln" d="M734 122 V150 H500 V190"/>
+  <text x="560" y="144" class="s">SSH deploy + .env from secrets</text>
+
+  <!-- AWS zone -->
+  <rect class="zone" x="24" y="190" width="640" height="386"/><text x="40" y="212" class="t h">AWS EC2 t3.micro, Elastic IP (Terraform)</text>
+  <text x="40" y="230" class="s">Docker Compose, deployed over SSH, automatic rollback if health check fails</text>
+
+  <rect class="box" x="48" y="262" width="150" height="70"/><text x="123" y="290" text-anchor="middle" class="t h">Caddy</text><text x="123" y="310" text-anchor="middle" class="s">:80 / :443, auto HTTPS</text>
+  <rect class="box" x="270" y="262" width="170" height="70"/><text x="355" y="290" text-anchor="middle" class="t h">FastAPI app</text><text x="355" y="310" text-anchor="middle" class="s">/tasks /auth /health /metrics</text>
+  <path class="ln" d="M198 297 H270"/>
+
+  <rect class="box" x="270" y="400" width="170" height="60"/><text x="355" y="426" text-anchor="middle" class="t h">Prometheus</text><text x="355" y="446" text-anchor="middle" class="s">scrape 15s + alert rules</text>
+  <path class="ln" d="M355 400 V332" /><text x="364" y="372" class="s">scrapes /metrics</text>
+  <rect class="box" x="48" y="400" width="150" height="60"/><text x="123" y="426" text-anchor="middle" class="t h">Node exporter</text><text x="123" y="446" text-anchor="middle" class="s">host CPU, RAM, disk</text>
+  <path class="ln" d="M198 430 H270"/>
+  <rect class="box" x="490" y="400" width="150" height="60"/><text x="565" y="426" text-anchor="middle" class="t h">Alertmanager</text><text x="565" y="446" text-anchor="middle" class="s">email notifications</text>
+  <path class="ln" d="M440 430 H490"/>
+  <rect class="box" x="270" y="500" width="170" height="60"/><text x="355" y="526" text-anchor="middle" class="t h">Grafana :3000</text><text x="355" y="546" text-anchor="middle" class="s">dashboards (my IP only)</text>
+  <path class="ln" d="M355 500 V460"/>
+
+  <!-- External -->
+  <rect class="box" x="720" y="262" width="216" height="70"/><text x="828" y="290" text-anchor="middle" class="t h">Supabase (managed)</text><text x="828" y="310" text-anchor="middle" class="s">Postgres + Auth, Row Level Security</text>
+  <path class="ln" d="M440 297 H720"/><text x="545" y="289" class="s">JWT verify + queries</text>
+
+  <rect class="box" x="720" y="400" width="216" height="60"/><text x="828" y="426" text-anchor="middle" class="t h">Uptime monitor</text><text x="828" y="446" text-anchor="middle" class="s">pings /health, emails on failure</text>
+  <path class="ln dash" d="M720 445 H692 V588"/>
+
+  <rect class="box" x="720" y="500" width="216" height="60"/><text x="828" y="526" text-anchor="middle" class="t h">Users (browser / API)</text><text x="828" y="546" text-anchor="middle" class="s">HTTPS</text>
+  <path class="ln" d="M828 560 V588 H12 V297 H48"/>
+  <text x="300" y="582" class="s">HTTPS requests</text>
+</svg>
